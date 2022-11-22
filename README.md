@@ -3,6 +3,8 @@ This java application generates and tests square mazes.
 This class implement a maze as an array of cells, each cell can be an empty place or a wall or a colored place (used to perform flooding and other tasks).
 Java 8 or later is required to run the application.
 
+The maze solver function findPathMaze() uses the flood fill algorithm to find the way out of the maze.
+
 # Compile
 Run following command to build the application:
 ```
