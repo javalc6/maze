@@ -14,7 +14,7 @@ javac TestMaze.java
 # Run
 Just use the following command to run the application:
 ```
-usage: java TestMaze [size]
+java TestMaze [size]
 
 optional parameter size must be an odd value greater than 3
 ```
