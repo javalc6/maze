@@ -54,4 +54,4 @@ length of shortest path=81
 # Screenshot
 Running *MazeGame*:
 
-![Screenshot](images/town.png)
+![Screenshot](images/maze.png)
