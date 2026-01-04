@@ -4,6 +4,7 @@ package maze;
 A maze is stored as an array of N x M squares, each square can be an empty place or a wall or a colored place (used to perform flooding and other tasks)
 N and M are odd numbers greater than 3
 
+As the maze generator uses DFS without creating loops, generated mazes have Tree structure, so player can exit simply using the hand-on-wall strategy.
 
 maze[] contains the following values:
 0: empty place
@@ -58,7 +59,7 @@ public class Maze {
 				if ((i % 2 == 0) || (j % 2 == 0))
 					maze[i][j] = WALL;
 				else maze[i][j] = EMPTY;
-//"extrude" blocks to form maze
+//carve blocks to form maze
 		Stack<Cell> queue = new Stack<>();
 
 		int x = out_door.x;
@@ -72,6 +73,7 @@ public class Maze {
 		queue.push(cell);
 		maze[x][y] = PATH;
 		int[] dirs = {0, 1, 2, 3};
+
 		while (!queue.empty()) {
 			int i = cell.x;
 			int j = cell.y;
@@ -101,7 +103,7 @@ public class Maze {
 					maze[--i][j] = PATH;
 					found = true;
 					break;
-				} else if ((j > 2) && (maze[i][j - 2] == EMPTY)) {//either dir == 3 or previous tests failed
+				} else if ((dir == 3) && (j > 2) && (maze[i][j - 2] == EMPTY)) {
 					maze[i][--j] = PATH;
 					maze[i][--j] = PATH;
 					found = true;

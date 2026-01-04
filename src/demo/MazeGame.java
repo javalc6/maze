@@ -18,19 +18,20 @@ import maze.Maze;
 import maze.Cell;
 
 public class MazeGame extends JFrame {
-	private final int maze_width = 29;//must be odd
-	private final int maze_height = 21;//must be odd
-
+	private final int MAZE_WIDTH = 29;//must be odd
+	private final int MAZE_HEIGHT = 21;//must be odd
     private final int TILE_SIZE = 30;
+
     private Maze mymaze;
     private int playerX, playerY;
     private int exitX, exitY;
+
 	private javax.swing.Timer hintFadeTimer;
 
     public MazeGame() {
-		mymaze = generateMaze(maze_width, maze_height);
+		mymaze = generateMaze(MAZE_WIDTH, MAZE_HEIGHT);
 
-        setTitle("Escape!");
+        setTitle("Escape! " + MAZE_WIDTH + " x " + MAZE_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         MazePanel mazePanel = new MazePanel();
@@ -58,7 +59,7 @@ public class MazeGame extends JFrame {
         });
         clearBtn.addActionListener(e -> clearPath());
 		newMazeBtn.addActionListener(e -> {
-            mymaze = generateMaze(maze_width, maze_height);
+            mymaze = generateMaze(MAZE_WIDTH, MAZE_HEIGHT);
 			mazePanel.repaint();
         });
 
@@ -85,11 +86,11 @@ public class MazeGame extends JFrame {
         setVisible(true);
     }
 
-	private Maze generateMaze(int maze_width, int maze_height) {
+	private Maze generateMaze(int MAZE_WIDTH, int MAZE_HEIGHT) {
 		Random random = new Random();
 //out door shall be placed on the enclosure wall
-		Cell out_door = new Cell(0, 1 + 2 * random.nextInt(maze_height / 2));
-		Maze maze = new Maze(maze_width, maze_height, out_door);
+		Cell out_door = new Cell(0, 1 + 2 * random.nextInt(MAZE_HEIGHT / 2));
+		Maze maze = new Maze(MAZE_WIDTH, MAZE_HEIGHT, out_door);
 //inner cell is the typical place where a player is put at the beginning of a game
 		Cell inner_cell = maze.getInnerCell();
 
@@ -154,9 +155,22 @@ public class MazeGame extends JFrame {
     }
 
     class MazePanel extends JPanel {
-        public MazePanel() {
+		private int tile_size;
+		private int oval_size, oval_offset;
+    
+		public MazePanel() {
+			int max = Math.max(MAZE_WIDTH, MAZE_HEIGHT);
+			if (max * TILE_SIZE > 900) {
+				tile_size = 900 / max;
+				oval_offset = 2;
+				oval_size = tile_size - 4;
+			} else {
+				tile_size = TILE_SIZE;
+				oval_offset = 4;
+				oval_size = tile_size - 8;
+			}
 			int[][] maze = mymaze.getMaze();
-            setPreferredSize(new Dimension(maze_width * TILE_SIZE, maze_height * TILE_SIZE));
+            setPreferredSize(new Dimension(MAZE_WIDTH * tile_size, MAZE_HEIGHT * tile_size));
         }
 
         @Override
@@ -167,25 +181,25 @@ public class MazeGame extends JFrame {
 
 			int[][] maze = mymaze.getMaze();
 			// Draw maze
-            for (int y = 0; y < maze_height; y++) {
-                for (int x = 0; x < maze_width; x++) {
+            for (int y = 0; y < MAZE_HEIGHT; y++) {
+                for (int x = 0; x < MAZE_WIDTH; x++) {
                     if (maze[x][y] == Maze.WALL) g.setColor(Color.BLACK);
                     else if (maze[x][y] == Maze.EMPTY) g.setColor(Color.WHITE);
                     else g.setColor(Color.GRAY);
 
-                    g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    g.fillRect(x * tile_size, y * tile_size, tile_size, tile_size);
 //                    g.setColor(Color.LIGHT_GRAY);
-                    g.drawRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    g.drawRect(x * tile_size, y * tile_size, tile_size, tile_size);
                 }
             }
 
             // Draw player
 			g.setColor(Color.RED);
-			g.fillOval(playerX * TILE_SIZE + 5, playerY * TILE_SIZE + 5, TILE_SIZE - 10, TILE_SIZE - 10);
+			g.fillOval(playerX * tile_size + oval_offset, playerY * tile_size + oval_offset, oval_size, oval_size);
             
             // Draw exit
             g.setColor(Color.GREEN);
-            g.fillRect(exitX * TILE_SIZE + 2, exitY * TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+            g.fillRect(exitX * tile_size + 2, exitY * tile_size + 2, tile_size - 4, tile_size - 4);
         }
     }
 

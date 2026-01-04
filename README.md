@@ -55,3 +55,7 @@ length of shortest path=81
 Running *MazeGame*:
 
 ![Screenshot](images/maze.png)
+
+129 x 121 maze:
+
+![Screenshot](images/big_maze.png)
