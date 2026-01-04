@@ -155,22 +155,11 @@ public class MazeGame extends JFrame {
     }
 
     class MazePanel extends JPanel {
-		private int tile_size;
-		private int oval_size, oval_offset;
     
-		public MazePanel() {
-			int max = Math.max(MAZE_WIDTH, MAZE_HEIGHT);
-			if (max * TILE_SIZE > 900) {
-				tile_size = 900 / max;
-				oval_offset = 2;
-				oval_size = tile_size - 4;
-			} else {
-				tile_size = TILE_SIZE;
-				oval_offset = 4;
-				oval_size = tile_size - 8;
-			}
-			int[][] maze = mymaze.getMaze();
-            setPreferredSize(new Dimension(MAZE_WIDTH * tile_size, MAZE_HEIGHT * tile_size));
+        public MazePanel() {
+            int initialWidth = MAZE_WIDTH * TILE_SIZE;
+            int initialHeight = MAZE_HEIGHT * TILE_SIZE;
+            setPreferredSize(new Dimension(initialWidth, initialHeight));
         }
 
         @Override
@@ -178,6 +167,13 @@ public class MazeGame extends JFrame {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);			
+
+            double tileW = (double) getWidth() / MAZE_WIDTH;
+            double tileH = (double) getHeight() / MAZE_HEIGHT;
+            double tileSize = Math.min(tileW, tileH);
+
+            int offsetX = (int) (getWidth() - (MAZE_WIDTH * tileSize)) / 2;
+            int offsetY = (int) (getHeight() - (MAZE_HEIGHT * tileSize)) / 2;
 
 			int[][] maze = mymaze.getMaze();
 			// Draw maze
@@ -187,19 +183,25 @@ public class MazeGame extends JFrame {
                     else if (maze[x][y] == Maze.EMPTY) g.setColor(Color.WHITE);
                     else g.setColor(Color.GRAY);
 
-                    g.fillRect(x * tile_size, y * tile_size, tile_size, tile_size);
-//                    g.setColor(Color.LIGHT_GRAY);
-                    g.drawRect(x * tile_size, y * tile_size, tile_size, tile_size);
+                    g.fillRect(offsetX + (int)(x * tileSize), offsetY + (int)(y * tileSize), 
+                               (int)Math.ceil(tileSize), (int)Math.ceil(tileSize));
+                    g.drawRect(offsetX + (int)(x * tileSize), offsetY + (int)(y * tileSize), 
+                               (int)Math.ceil(tileSize), (int)Math.ceil(tileSize));
                 }
             }
 
+            int padding = (int)(tileSize * 0.1); // 10% padding
             // Draw player
-			g.setColor(Color.RED);
-			g.fillOval(playerX * tile_size + oval_offset, playerY * tile_size + oval_offset, oval_size, oval_size);
+            g.setColor(Color.RED);
+            g.fillOval(offsetX + (int)(playerX * tileSize) + padding, 
+                       offsetY + (int)(playerY * tileSize) + padding, 
+                       (int)(tileSize - 2 * padding), (int)(tileSize - 2 * padding));
             
             // Draw exit
             g.setColor(Color.GREEN);
-            g.fillRect(exitX * tile_size + 2, exitY * tile_size + 2, tile_size - 4, tile_size - 4);
+            g.fillRect(offsetX + (int)(exitX * tileSize) + padding, 
+                       offsetY + (int)(exitY * tileSize) + padding, 
+                       (int)(tileSize - 2 * padding), (int)(tileSize - 2 * padding));
         }
     }
 
