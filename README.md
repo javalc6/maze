@@ -16,20 +16,20 @@ Just use the following command to run the test:
 usage: java -cp classes test.TestMaze [width [height]]
 
 optional parameters width and height must be odd values greater than 3
-
-this command can create a maze 1001 x 1001 in few seconds
 ```
+This command can create a maze 1001 x 1001 in few seconds
 
 # Run Game Demo
 Just use the following command to run the mini game:
 ```
 usage: java -cp classes demo.MazeGame
 
-move the player (red circle) using arrow keys
 ```
+Move the player (red circle) using arrow keys
+
+Try MazeGame using the browser without downloading anything using the *SnapCode* tool: [MazeGame via SnapCode](https://reportmill.com/SnapCode/app/#open:https://github.com/javalc6/maze.zip#/demo/MazeGame.java)
 
 # Example
-
 Running the test with *TestMaze 15* may provide following output:
 ```
 checkReachability: true
