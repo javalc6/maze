@@ -28,6 +28,14 @@ usage: java -cp classes demo.MazeGame
 move the player (red circle) using arrow keys
 ```
 
+# Run 3D Game Demo
+Just use the following command to run the mini game 3D:
+```
+usage: java -cp classes demo.Maze3D
+
+move the player (red triangle in minimap) using arrow keys
+```
+
 # Example
 
 Running the test with *TestMaze 15* may provide following output:
@@ -59,3 +67,7 @@ Running *MazeGame*:
 129 x 121 maze:
 
 ![Screenshot](images/big_maze.png)
+
+Running *Maze3D*:
+
+![Screenshot](images/maze3D.png)
