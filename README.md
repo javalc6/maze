@@ -16,6 +16,7 @@ int[][]	maze = mymaze.cloneMaze();
 //inner cell is the typical place where a player is put at the beginning of a game
 Cell inner_cell = mymaze.getInnerCell();
 ```
+The maze can be solved using *findPathMaze* described with other useful [Methods](INFO.md#Methods).
 
 ## Run Test
 Just use the following command to run the test:
