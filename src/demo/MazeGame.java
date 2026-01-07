@@ -23,6 +23,7 @@ public class MazeGame extends JFrame {
     private final int TILE_SIZE = 30;
 
     private Maze mymaze;
+	private int[][] maze;//used to hold deep copy
     private int playerX, playerY;
     private int exitX, exitY;
 
@@ -90,15 +91,16 @@ public class MazeGame extends JFrame {
 		Random random = new Random();
 //out door shall be placed on the enclosure wall
 		Cell out_door = new Cell(0, 1 + 2 * random.nextInt(MAZE_HEIGHT / 2));
-		Maze maze = new Maze(MAZE_WIDTH, MAZE_HEIGHT, out_door);
+		Maze mymaze = new Maze(MAZE_WIDTH, MAZE_HEIGHT, out_door);
+		maze = mymaze.cloneMaze();
 //inner cell is the typical place where a player is put at the beginning of a game
-		Cell inner_cell = maze.getInnerCell();
+		Cell inner_cell = mymaze.getInnerCell();
 
         playerX = inner_cell.getX();
         playerY = inner_cell.getY();
         exitX = out_door.getX();
         exitY = out_door.getY();
-		return maze;
+		return mymaze;
 	}
 
     private void movePlayer(int dx, int dy) {
@@ -114,7 +116,6 @@ public class MazeGame extends JFrame {
     }
 
     private boolean isValidMove(int x, int y) {
-		int[][] maze = mymaze.getMaze();
         return x >= 0 && x < maze.length && y >= 0 && y < maze[0].length && maze[x][y] != 1;
     }
 
@@ -132,10 +133,9 @@ public class MazeGame extends JFrame {
     }
 
     private void clearPath() {
-		int[][] maze = mymaze.getMaze();
         for (int i = 0; i < maze.length; i++) {
             for (int j = 0; j < maze[i].length; j++) {
-                if (maze[i][j] == 2) maze[i][j] = Maze.EMPTY;
+                if (maze[i][j] == Maze.PATH) maze[i][j] = Maze.EMPTY;
             }
         }
         repaint();
@@ -145,9 +145,8 @@ public class MazeGame extends JFrame {
 		ArrayList<Cell> path = mymaze.findPathMaze(new Cell(playerX, playerY), new Cell(exitX, exitY));
 		Collections.reverse(path); // From player to exit
 
-		int[][] maze = mymaze.getMaze();
 		for (Cell cell: path) {
-			maze[cell.getX()][cell.getY()] = 2;
+			maze[cell.getX()][cell.getY()] = Maze.PATH;
 			if (steps_to_show != 0 && --steps_to_show == 0)
 				break;
 		}
@@ -175,7 +174,6 @@ public class MazeGame extends JFrame {
             int offsetX = (int) (getWidth() - (MAZE_WIDTH * tileSize)) / 2;
             int offsetY = (int) (getHeight() - (MAZE_HEIGHT * tileSize)) / 2;
 
-			int[][] maze = mymaze.getMaze();
 			// Draw maze
             for (int y = 0; y < MAZE_HEIGHT; y++) {
                 for (int x = 0; x < MAZE_WIDTH; x++) {

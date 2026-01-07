@@ -58,7 +58,7 @@ public class Maze3D extends JFrame {
         px = inner_cell.getX() + 0.5;
         py = inner_cell.getY() + 0.5;
 
-		maze = mymaze.getMaze();
+		maze = mymaze.cloneMaze();
 //adjust angle to avoid looking a wall
 		if (maze[inner_cell.getX() + 1][inner_cell.getY()] == Maze.WALL) {
 			if (maze[inner_cell.getX()][inner_cell.getY() + 1] == Maze.WALL) {

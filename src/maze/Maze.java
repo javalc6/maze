@@ -207,9 +207,13 @@ public class Maze {
 		return maze[p.x][p.y];
 	}
 	
-//	getMaze(): get full maze
-	public int[][] getMaze() {
-		return maze;
+// cloneMaze(): get maze as int[][] using deep copy
+    public int[][] cloneMaze() {
+		int[][] copy = new int[maze.length][];
+		for (int i = 0; i < maze.length; i++) {
+			copy[i] = maze[i].clone(); 
+		}
+		return copy;
 	}
 	
 //	setMaze(): set val along path
